@@ -1,0 +1,26 @@
+﻿@page "/"
+
+<PageTitle>Dashboard · AI Work Hub</PageTitle>
+
+<div class="page-heading"><div><p class="eyebrow">FRIDAY, 15 AUGUST</p><h1>Good morning, Alex <span aria-hidden="true">👋</span></h1><p class="page-subtitle">Here is what needs your attention today.</p></div><button class="primary-button"><span>＋</span> New task</button></div>
+
+<section class="summary-grid" aria-label="Work summary">
+    <article class="summary-card accent-purple"><div class="card-icon">✓</div><div><p>My open tasks</p><strong>12</strong><span class="trend positive">↑ 2 from last week</span></div></article>
+    <article class="summary-card accent-blue"><div class="card-icon">◉</div><div><p>In progress</p><strong>5</strong><span class="trend">Across 3 projects</span></div></article>
+    <article class="summary-card accent-amber"><div class="card-icon">◷</div><div><p>Due this week</p><strong>4</strong><span class="trend warning">1 needs attention</span></div></article>
+</section>
+
+<section class="content-grid">
+    <article class="panel task-panel"><div class="panel-heading"><div><h2>My priorities</h2><p>Focus on these next.</p></div><a href="/my-tasks">View all <span>→</span></a></div><div class="task-list">@foreach (var task in PriorityTasks) { <div class="task-row"><button class="check-button" aria-label="Mark @task.Title as complete"></button><div class="task-copy"><strong>@task.Title</strong><span>@task.Project</span></div><span class="priority @task.PriorityClass">@task.Priority</span><span class="due-date @task.DueClass">@task.Due</span><div class="avatar small">@task.Initials</div></div> }</div></article>
+    <article class="panel progress-panel"><div class="panel-heading"><div><h2>Project progress</h2><p>Work moving this week.</p></div><a href="/projects">All projects <span>→</span></a></div>@foreach (var project in Projects) { <div class="project-progress"><div><strong>@project.Name</strong><span>@project.Completed / @project.Total tasks</span></div><strong>@project.Percent%</strong></div><div class="progress-track"><span style="width: @project.Percent%"></span></div> }</article>
+</section>
+
+<section class="bottom-grid"><article class="panel activity-panel"><div class="panel-heading"><div><h2>Recent activity</h2><p>Updates from your workspace.</p></div></div><div class="activity-item"><div class="avatar small purple">JS</div><p><strong>Jordan Smith</strong> moved <b>Mobile app wireframes</b> to In review.<span>18 minutes ago</span></p></div><div class="activity-item"><div class="avatar small orange">KL</div><p><strong>Kai Lee</strong> added 3 tasks to <b>Website redesign</b>.<span>1 hour ago</span></p></div><div class="activity-item"><div class="avatar small green">MB</div><p><strong>Mina Bose</strong> completed <b>Prepare customer interview</b>.<span>3 hours ago</span></p></div></article><article class="ai-card"><span class="ai-sparkle">✦</span><p class="eyebrow">AI WORKSPACE</p><h2>Turn meeting notes into action.</h2><p>Summarise decisions, identify risks, and suggest tasks for your team to review.</p><button class="secondary-button">Try meeting assistant <span>→</span></button></article></section>
+
+@code {
+    // Temporary data lets us learn UI rendering before we add a database.
+    private readonly TaskPreview[] PriorityTasks = [new("Review onboarding flow", "Mobile app", "High", "high", "Today", "today", "JS"), new("Prepare sprint planning", "Operations", "Medium", "medium", "Tomorrow", "", "AM"), new("Share research findings", "Website redesign", "Low", "low", "Fri, 22 Aug", "", "MB")];
+    private readonly ProjectProgress[] Projects = [new("Mobile app", 18, 24, 75), new("Website redesign", 12, 20, 60), new("Operations refresh", 5, 14, 36)];
+    private sealed record TaskPreview(string Title, string Project, string Priority, string PriorityClass, string Due, string DueClass, string Initials);
+    private sealed record ProjectProgress(string Name, int Completed, int Total, int Percent);
+}

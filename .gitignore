@@ -1,0 +1,22 @@
+# .NET build output
+[Bb]in/
+[Oo]bj/
+
+# IDE and editor files
+.vs/
+.vscode/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+*.swp
+
+# Local secrets and machine-specific configuration
+.env
+.env.*
+appsettings.Local.json
+secrets.json
+
+# Local tooling and operating-system files
+work/
+.DS_Store

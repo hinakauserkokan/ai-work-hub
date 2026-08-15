@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+<div class="app-shell">
+    <aside class="sidebar" aria-label="Primary navigation">
+        <a class="brand" href="/" aria-label="AI Work Hub dashboard"><span class="brand-mark">✦</span><span>AI Work Hub</span></a>
+        <nav class="primary-nav">
+            <p class="nav-label">WORKSPACE</p>
+            <NavLink href="/" Match="NavLinkMatch.All" class="nav-link"><span>▦</span> Dashboard</NavLink>
+            <NavLink href="/projects" class="nav-link"><span>▱</span> Projects</NavLink>
+            <NavLink href="/my-tasks" class="nav-link"><span>✓</span> My Tasks</NavLink>
+            <p class="nav-label nav-section">COLLABORATE</p>
+            <NavLink href="/meetings" class="nav-link"><span>◫</span> Meetings</NavLink>
+            <NavLink href="/team" class="nav-link"><span>♧</span> Team</NavLink>
+        </nav>
+        <div class="sidebar-footer">
+            <NavLink href="/settings" class="nav-link"><span>⚙</span> Settings</NavLink>
+            <div class="user-card"><div class="avatar">AM</div><div><strong>Alex Morgan</strong><small>Product designer</small></div><span class="more">•••</span></div>
+        </div>
+    </aside>
+    <main class="main-content">
+        <header class="topbar"><label class="search-box"><span>⌕</span><input type="search" placeholder="Search anything..." aria-label="Search" /><kbd>⌘ K</kbd></label><div class="topbar-actions"><button class="icon-button" aria-label="Notifications">♢<span class="notification-dot"></span></button><button class="help-button">?</button></div></header>
+        <section class="page-content">@Body</section>
+    </main>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unhandled error has occurred.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss">🗙</span>
+</div>
