@@ -2,7 +2,7 @@
 
 <PageTitle>Dashboard · AI Work Hub</PageTitle>
 
-<div class="page-heading"><div><p class="eyebrow">FRIDAY, 15 AUGUST</p><h1>Good morning, Alex <span aria-hidden="true">👋</span></h1><p class="page-subtitle">Here is what needs your attention today.</p></div><button class="primary-button"><span>＋</span> New task</button></div>
+<div class="page-heading"><div><p class="eyebrow">FRIDAY, 15 AUGUST</p><h1>Good morning, Hina <span aria-hidden="true">👋</span></h1><p class="page-subtitle">Here is what needs your attention today.</p></div><button class="primary-button"><span>＋</span> New task</button></div>
 
 <section class="summary-grid" aria-label="Work summary">
     <article class="summary-card accent-purple"><div class="card-icon">✓</div><div><p>My open tasks</p><strong>12</strong><span class="trend positive">↑ 2 from last week</span></div></article>
@@ -19,7 +19,7 @@
 
 @code {
     // Temporary data lets us learn UI rendering before we add a database.
-    private readonly TaskPreview[] PriorityTasks = [new("Review onboarding flow", "Mobile app", "High", "high", "Today", "today", "JS"), new("Prepare sprint planning", "Operations", "Medium", "medium", "Tomorrow", "", "AM"), new("Share research findings", "Website redesign", "Low", "low", "Fri, 22 Aug", "", "MB")];
+    private readonly TaskPreview[] PriorityTasks = [new("Review onboarding flow", "Mobile app", "High", "high", "Today", "today", "JS"), new("Prepare sprint planning", "Operations", "Medium", "medium", "Tomorrow", "", "H"), new("Share research findings", "Website redesign", "Low", "low", "Fri, 22 Aug", "", "MB")];
     private readonly ProjectProgress[] Projects = [new("Mobile app", 18, 24, 75), new("Website redesign", 12, 20, 60), new("Operations refresh", 5, 14, 36)];
     private sealed record TaskPreview(string Title, string Project, string Priority, string PriorityClass, string Due, string DueClass, string Initials);
     private sealed record ProjectProgress(string Name, int Completed, int Total, int Percent);
