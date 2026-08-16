@@ -4,7 +4,7 @@ AI Work Hub is a team workspace for projects, tasks, meeting decisions, and late
 
 ## Current milestone
 
-The application shell and dashboard prototype are complete. The dashboard uses temporary in-component data so we can learn the frontend before connecting a database.
+The app shell, dashboard prototype, and projects/task-board frontend are complete. These screens use temporary in-component data so we can learn the frontend before connecting a database.
 
 ## Run the app
 
@@ -20,3 +20,4 @@ Open the local URL printed by .NET (normally `https://localhost:xxxx`).
 
 - [Project roadmap](docs/00-project-roadmap.md)
 - [App shell and navigation](docs/01-app-shell-and-navigation.md)
+- [Projects and task board](docs/02-projects-and-task-board.md)

@@ -7,7 +7,7 @@ AI Work Hub helps small teams organise work and preserve decisions. AI will assi
 ## Delivery order
 
 1. **App shell and navigation** — shared sidebar, top bar, routes, and a dashboard prototype. Complete.
-2. **Projects and task-board frontend** — project list, Kanban columns, task card, and task-detail panel.
+2. **Projects and task-board frontend** — project list, Kanban columns, task cards, filters, and temporary interactive state. Complete.
 3. **Persistence** — domain models, Entity Framework Core, PostgreSQL, migrations, and CRUD services.
 4. **Accounts and teams** — authentication, memberships, roles, and authorization.
 5. **Collaboration** — comments, activity history, and real-time updates.

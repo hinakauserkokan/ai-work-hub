@@ -1,3 +1,33 @@
 @page "/my-tasks"
+
 <PageTitle>My Tasks · AI Work Hub</PageTitle>
-<div class="page-heading"><div><p class="eyebrow">WORKSPACE</p><h1>My tasks</h1><p class="page-subtitle">Your personal task list will appear here.</p></div><button class="primary-button">＋ New task</button></div>
+
+<div class="page-heading"><div><p class="eyebrow">WORKSPACE</p><h1>My tasks</h1><p class="page-subtitle">Plan your day and keep the important work visible.</p></div><button class="primary-button" @onclick="() => AddTask()"><span>＋</span> New task</button></div>
+
+<section class="task-board-toolbar" aria-label="Task board controls"><div class="filter-tabs" role="tablist">@foreach (var filter in Filters) { <button class="filter-tab @(activeFilter == filter ? "active" : null)" @onclick="() => activeFilter = filter">@filter</button> }</div><p><strong>@OpenTaskCount</strong> open tasks</p></section>
+
+<section class="kanban-board" aria-label="Task board">
+    @foreach (var column in Columns)
+    {
+        <div class="board-column"><div class="board-column-heading"><div><span class="column-dot @column.Tone"></span><h2>@column.Name</h2><span>@TasksFor(column.Name).Count()</span></div><button class="quiet-button" aria-label="Add task to @column.Name" @onclick="() => AddTask(column.Name)">＋</button></div><div class="board-cards">
+            @foreach (var task in TasksFor(column.Name)) { <article class="board-card"><div class="board-card-title"><span class="priority-dot @task.Priority"></span><h3>@task.Title</h3><button class="quiet-button" aria-label="Task options">•••</button></div><p>@task.Project</p><div class="board-card-footer"><span class="due-date @task.DueClass">@task.Due</span><div class="avatar small @task.Member.Tone">@task.Member.Initials</div></div><button class="move-task" @onclick="() => MoveTask(task)" aria-label="Move @task.Title to the next stage">Move to next stage →</button></article> }
+            @if (!TasksFor(column.Name).Any()) { <p class="empty-column">No tasks here yet.</p> }
+        </div></div>
+    }
+</section>
+
+@code {
+    private static readonly string[] Filters = ["Board", "List", "Completed"];
+    private static readonly Column[] Columns = [new("To do", "purple"), new("In progress", "blue"), new("In review", "amber")];
+    private readonly List<TaskPreview> tasks = [
+        new("Review onboarding flow", "Mobile app", "To do", "high", "Today", "today", new("JS", "purple")), new("Prepare sprint planning", "Operations refresh", "To do", "medium", "Tomorrow", "", new("H", "")), new("Share research findings", "Website redesign", "To do", "low", "Fri, 22 Aug", "", new("MB", "green")), new("Mobile app wireframes", "Mobile app", "In progress", "high", "Today", "today", new("JS", "purple")), new("Update pricing page", "Website redesign", "In progress", "medium", "Thu, 21 Aug", "", new("KL", "orange")), new("Draft interview guide", "Research repository", "In review", "low", "Mon, 25 Aug", "", new("MB", "green"))];
+    private string activeFilter = "Board";
+    private int newTaskNumber = 1;
+    private int OpenTaskCount => tasks.Count;
+    private IEnumerable<TaskPreview> TasksFor(string status) => tasks.Where(task => task.Status == status);
+    private void AddTask(string status = "To do") => tasks.Add(new($"Untitled task {newTaskNumber++}", "Choose a project", status, "medium", "No due date", "", new("H", "")));
+    private void MoveTask(TaskPreview task) { var index = Array.FindIndex(Columns, column => column.Name == task.Status); task.Status = Columns[(index + 1) % Columns.Length].Name; }
+    private sealed class TaskPreview(string title, string project, string status, string priority, string due, string dueClass, Member member) { public string Title { get; } = title; public string Project { get; } = project; public string Status { get; set; } = status; public string Priority { get; } = priority; public string Due { get; } = due; public string DueClass { get; } = dueClass; public Member Member { get; } = member; }
+    private sealed record Column(string Name, string Tone);
+    private sealed record Member(string Initials, string Tone);
+}
