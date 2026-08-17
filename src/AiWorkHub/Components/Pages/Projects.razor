@@ -1,4 +1,6 @@
 @page "/projects"
+@using AiWorkHub.Services
+@inject ProjectService ProjectService
 
 <PageTitle>Projects · AI Work Hub</PageTitle>
 
@@ -12,30 +14,41 @@
     <label class="list-search"><span aria-hidden="true">⌕</span><input @bind="searchTerm" placeholder="Search projects" aria-label="Search projects" /></label>
 </section>
 
-<section class="project-grid" aria-label="Projects">
-    @foreach (var project in VisibleProjects)
-    {
-        <article class="project-card">
-            <div class="project-card-top"><span class="project-icon @project.Accent">@project.Icon</span><button class="quiet-button" aria-label="More options for @project.Name">•••</button></div>
-            <h2>@project.Name</h2><p>@project.Description</p>
-            <div class="project-meta"><span class="status-pill @project.StatusClass">@project.Status</span><span>@project.DueText</span></div>
-            <div class="project-card-progress"><div><span>@project.Completed of @project.Total tasks</span><strong>@project.Percent%</strong></div><div class="progress-track"><span style="width: @project.Percent%"></span></div></div>
-            <div class="project-card-footer"><div class="avatar-stack" aria-label="Project team">@foreach (var member in project.Members) { <span class="avatar small @member.Tone">@member.Initials</span> }</div><span>@project.MemberCount members</span></div>
-        </article>
-    }
-</section>
+@if (projects is null)
+{
+    <p class="empty-column">Loading projects…</p>
+}
+else
+{
+    <section class="project-grid" aria-label="Projects">
+        @foreach (var project in VisibleProjects)
+        {
+            <article class="project-card">
+                <div class="project-card-top"><span class="project-icon @project.Accent">@project.Icon</span><button class="quiet-button" aria-label="More options for @project.Name">•••</button></div>
+                <h2>@project.Name</h2><p>@project.Description</p>
+                <div class="project-meta"><span class="status-pill @project.StatusClass">@project.Status</span><span>@project.DueText</span></div>
+                <div class="project-card-progress"><div><span>@project.Completed of @project.Total tasks</span><strong>@project.Percent%</strong></div><div class="progress-track"><span style="width: @project.Percent%"></span></div></div>
+                <div class="project-card-footer"><div class="avatar-stack" aria-label="Project team">@foreach (var member in project.Members) { <span class="avatar small @member.Tone">@member.Initials</span> }</div><span>@project.MemberCount members</span></div>
+            </article>
+        }
+    </section>
+}
 
 @code {
     private static readonly string[] Filters = ["All projects", "Active", "Completed"];
-    private readonly List<ProjectPreview> projects = [
-        new("Mobile app", "A clearer, faster experience for customers on the go.", "📱", "purple", "In progress", "in-progress", "Due 29 Aug", 18, 24, [new("JS", "purple"), new("MB", "green"), new("KL", "orange")], 6),
-        new("Website redesign", "Refresh the marketing site and improve conversion paths.", "◈", "blue", "In progress", "in-progress", "Due 5 Sep", 12, 20, [new("KL", "orange"), new("H", "")], 4),
-        new("Operations refresh", "Document repeatable workflows for the growing team.", "⌘", "amber", "Planning", "planning", "Due 12 Sep", 5, 14, [new("H", ""), new("JS", "purple")], 3),
-        new("Research repository", "Centralise interviews, insights, and opportunity areas.", "✦", "green", "Complete", "complete", "Completed 14 Aug", 16, 16, [new("MB", "green"), new("H", "")], 2)];
+    private List<ProjectSummary>? projects;
     private string activeFilter = "All projects";
     private string searchTerm = string.Empty;
-    private IEnumerable<ProjectPreview> VisibleProjects => projects.Where(project => (activeFilter == "All projects" || project.Status == activeFilter || (activeFilter == "Active" && project.Status != "Complete")) && project.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
-    private void AddProject() => projects.Insert(0, new("Untitled project", "Add a purpose and tasks to get this project underway.", "＋", "purple", "Planning", "planning", "No due date", 0, 0, [new("H", "")], 1));
-    private sealed record ProjectPreview(string Name, string Description, string Icon, string Accent, string Status, string StatusClass, string DueText, int Completed, int Total, Member[] Members, int MemberCount) { public int Percent => Total == 0 ? 0 : Completed * 100 / Total; }
-    private sealed record Member(string Initials, string Tone);
+
+    protected override async Task OnInitializedAsync() => projects = await ProjectService.GetProjectSummariesAsync();
+
+    private IEnumerable<ProjectSummary> VisibleProjects => (projects ?? [])
+        .Where(project => (activeFilter == "All projects" || project.Status == activeFilter || (activeFilter == "Active" && project.Status != "Complete"))
+            && project.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase));
+
+    private async Task AddProject()
+    {
+        await ProjectService.AddProjectAsync();
+        projects = await ProjectService.GetProjectSummariesAsync();
+    }
 }
