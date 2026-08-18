@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "aiworkhub",
+      "runtimeExecutable": "dotnet",
+      "runtimeArgs": ["run", "--project", "src/AiWorkHub", "--launch-profile", "http", "--urls", "http://127.0.0.1:5253"],
+      "port": 5253
+    }
+  ]
+}
